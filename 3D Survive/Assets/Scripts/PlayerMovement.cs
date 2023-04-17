@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     //Movement
     public float moveSpeed = 4500;
     public float maxSpeed = 20;
+    public float maxSprintSpeed = 30;
     public bool grounded;
     public LayerMask whatIsGround;
 
@@ -32,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 playerScale;
     public float slideForce = 400;
     public float slideCounterMovement = 0.2f;
+    private float recentSprintTime = 0;
+    private bool isSliding;
 
     //Jumping
     private bool readyToJump = true;
@@ -79,6 +82,13 @@ public class PlayerMovement : MonoBehaviour
         y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetButton("Jump");
         crouching = Input.GetKey(KeyCode.LeftControl);
+        sprinting = Input.GetKey(KeyCode.LeftShift);
+
+        //For slide functionality
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            recentSprintTime = Time.time;
+        }
 
         //Crouching
         if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -91,10 +101,11 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.localScale = crouchScale;
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        if (rb.velocity.magnitude > 0.5f)
+        if ((rb.velocity.magnitude > 0.5f) && (Time.time - recentSprintTime < 0.5f))
         {
             if (grounded)
             {
+                this.isSliding = true;
                 rb.AddForce(orientation.transform.forward * slideForce);
             }
         }
@@ -104,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.localScale = playerScale;
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        this.isSliding = false;
     }
 
     private void Movement()
@@ -123,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Set max speed
         float maxSpeed = this.maxSpeed;
+        float maxSprintSpeed = this.maxSprintSpeed;
 
         //If sliding down a ramp, add force down so player stays grounded and also builds speed
         if (crouching && grounded && readyToJump)
@@ -132,27 +145,42 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //If speed is larger than maxspeed, cancel out the input so you don't go over max speed
-        if (x > 0 && xMag > maxSpeed) x = 0;
-        if (x < 0 && xMag < -maxSpeed) x = 0;
-        if (y > 0 && yMag > maxSpeed) y = 0;
-        if (y < 0 && yMag < -maxSpeed) y = 0;
+        if (!sprinting)
+        {
+            if (x > 0 && xMag > maxSpeed) x = 0;
+            if (x < 0 && xMag < -maxSpeed) x = 0;
+            if (y > 0 && yMag > maxSpeed) y = 0;
+            if (y < 0 && yMag < -maxSpeed) y = 0;
+        }
+        else
+        {
+            if (x > 0 && xMag > maxSprintSpeed) x = 0;
+            if (x < 0 && xMag < -maxSprintSpeed) x = 0;
+            if (y > 0 && yMag > maxSprintSpeed) y = 0;
+            if (y < 0 && yMag < -maxSprintSpeed) y = 0;
+        }
+        
 
         //Some multipliers
-        float multiplier = 1f, multiplierV = 1f;
+        float multiplier = 1f, multiplierV = 1f, speedMultiplier = 1f;
 
         // Movement in air
         if (!grounded)
         {
             multiplier = 0.5f;
             multiplierV = 0.5f;
+            speedMultiplier = 1f;
         }
 
         // Movement while sliding
         if (grounded && crouching) multiplierV = 0f;
 
+        // Movement while sprinting
+        if (grounded && sprinting && !crouching) speedMultiplier = 20f;
+
         //Apply forces to move player
-        rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
-        rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
+        rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV * speedMultiplier);
+        rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier * speedMultiplier);
     }
 
     private void Jump()
@@ -293,5 +321,11 @@ public class PlayerMovement : MonoBehaviour
     private void StopGrounded()
     {
         grounded = false;
+    }
+
+    // Returns whether player is sliding or not
+    public bool IsSliding()
+    {
+        return this.isSliding;
     }
 }
