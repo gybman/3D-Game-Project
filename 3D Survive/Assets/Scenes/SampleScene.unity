@@ -509,7 +509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051073, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051103, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_RootOrder
@@ -574,7 +574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051073, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051103, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_RootOrder
@@ -830,7 +830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051073, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051103, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_RootOrder
@@ -1325,6 +1325,7 @@ MonoBehaviour:
   moveSpeed: 4500
   maxSpeed: 15
   maxSprintSpeed: 25
+  sprintTimer: 2
   grounded: 0
   whatIsGround:
     serializedVersion: 2
@@ -1431,7 +1432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051073, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5992571038840051103, guid: b8a76ee121a170a4ca2d694beb06e8b0, type: 3}
       propertyPath: m_RootOrder

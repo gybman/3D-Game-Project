@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 4500;
     public float maxSpeed = 20;
     public float maxSprintSpeed = 30;
+    public float sprintTimer = 2.0f;
     public bool grounded;
     public LayerMask whatIsGround;
 
@@ -33,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 playerScale;
     public float slideForce = 400;
     public float slideCounterMovement = 0.2f;
-    private float recentSprintTime = 0;
     private bool isSliding;
 
     //Jumping
@@ -82,13 +82,10 @@ public class PlayerMovement : MonoBehaviour
         y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetButton("Jump");
         crouching = Input.GetKey(KeyCode.LeftControl);
-        sprinting = Input.GetKey(KeyCode.LeftShift);
 
-        //For slide functionality
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            recentSprintTime = Time.time;
-        }
+        //Sprinting
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            StartSprint();
 
         //Crouching
         if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -97,12 +94,25 @@ public class PlayerMovement : MonoBehaviour
             StopCrouch();
     }
 
+    private void StartSprint()
+    {
+        sprinting = true;
+        Invoke("StopSprint", sprintTimer);
+    }
+
+    private void StopSprint()
+    {
+        CancelInvoke("StopSprint");
+        sprinting = false;
+    }
+
     private void StartCrouch()
     {
         transform.localScale = crouchScale;
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        if ((rb.velocity.magnitude > 0.5f) && (Time.time - recentSprintTime < 0.5f))
+        if (sprinting)
         {
+            StopSprint();
             if (grounded)
             {
                 this.isSliding = true;
