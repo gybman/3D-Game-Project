@@ -49,6 +49,14 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 normalVector = Vector3.up;
     private Vector3 wallNormalVector;
 
+
+    //FootSteps
+    public AudioClip footStepSound;
+    public float footStepDelay;
+    public float sprintFootStepDelay;
+
+    private float nextFootstep = 0;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -80,6 +88,27 @@ public class PlayerMovement : MonoBehaviour
     {
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
+
+        if(x == 0f && y == 0f)
+        {
+            sprinting = false;
+        }
+
+        if ((x != 0f || y != 0f) && grounded)
+        {
+            nextFootstep -= Time.deltaTime;
+            if (nextFootstep <= 0 && !sprinting && !isSliding)
+            {
+                GetComponentInParent<AudioSource>().PlayOneShot(footStepSound, 0.7f);
+                nextFootstep += footStepDelay;
+            }
+            else if(nextFootstep <= 0 && sprinting && !isSliding)
+            {
+                GetComponentInParent<AudioSource>().PlayOneShot(footStepSound, 0.7f);
+                nextFootstep += sprintFootStepDelay;
+            }
+        }
+
         jumping = Input.GetButton("Jump");
         crouching = Input.GetKey(KeyCode.LeftControl);
 
@@ -110,6 +139,8 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.localScale = crouchScale;
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+
+        // Slide
         if (sprinting)
         {
             StopSprint();
@@ -186,7 +217,7 @@ public class PlayerMovement : MonoBehaviour
         if (grounded && crouching) multiplierV = 0f;
 
         // Movement while sprinting
-        if (grounded && sprinting && !crouching) speedMultiplier = 20f;
+        if (grounded && sprinting && !crouching) speedMultiplier = 15f;
 
         //Apply forces to move player
         rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV * speedMultiplier);
@@ -338,4 +369,11 @@ public class PlayerMovement : MonoBehaviour
     {
         return this.isSliding;
     }
+
+    public bool isSprinting()
+    {
+        return this.sprinting;
+    }
+
+
 }
