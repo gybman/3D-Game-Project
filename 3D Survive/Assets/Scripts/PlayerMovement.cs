@@ -217,7 +217,7 @@ public class PlayerMovement : MonoBehaviour
         if (grounded && crouching) multiplierV = 0f;
 
         // Movement while sprinting
-        if (grounded && sprinting && !crouching) speedMultiplier = 15f;
+        if (grounded && sprinting && !crouching) speedMultiplier = 10f;
 
         //Apply forces to move player
         rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV * speedMultiplier);
