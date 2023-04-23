@@ -11,6 +11,7 @@ public class EnemyFollowScript : MonoBehaviour
 
     private Transform playerTarget;
     [SerializeField] Animator animator;
+    public AudioClip[] zombieSFX;
 
     private void Awake()
     {
@@ -20,6 +21,9 @@ public class EnemyFollowScript : MonoBehaviour
     void Start()
     {
         playerTarget = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        GetComponent<AudioSource>().clip = zombieSFX[Random.Range(0, zombieSFX.Length)];
+        GetComponent<AudioSource>().Play();
+        Invoke("Growl", Random.Range(2.0f, 8.0f));
     }
 
     // Update is called once per frame
@@ -37,5 +41,12 @@ public class EnemyFollowScript : MonoBehaviour
             animator.SetBool("inAttackRange", false);
             navMeshAgent.isStopped = false;
         }
+    }
+
+    private void Growl()
+    {
+        GetComponent<AudioSource>().clip = zombieSFX[Random.Range(0, zombieSFX.Length)];
+        GetComponent<AudioSource>().Play();
+        Invoke("Growl", Random.Range(2.0f, 8.0f));
     }
 }

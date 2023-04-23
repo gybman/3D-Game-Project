@@ -645,7 +645,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb28a6a98c8b034dbbacd401820f38f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: 0
   timeToHeal: 2
   maxHealth: 3
 --- !u!1 &2308323023879005753
