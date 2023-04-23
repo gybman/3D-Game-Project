@@ -498,6 +498,7 @@ GameObject:
   - component: {fileID: 2308323023199988646}
   - component: {fileID: 2308323023199988647}
   - component: {fileID: 2308323023199988644}
+  - component: {fileID: 2115121565}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -632,6 +633,21 @@ MonoBehaviour:
   footStepSound: {fileID: 8300000, guid: 263f8aaa01d5d0041b082b7b69d9ca02, type: 3}
   footStepDelay: 0.3
   sprintFootStepDelay: 0.2
+--- !u!114 &2115121565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2308323023199988666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb28a6a98c8b034dbbacd401820f38f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: 0
+  timeToHeal: 2
+  maxHealth: 3
 --- !u!1 &2308323023879005753
 GameObject:
   m_ObjectHideFlags: 0
