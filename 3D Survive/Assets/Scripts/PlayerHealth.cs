@@ -9,31 +9,42 @@ public class PlayerHealth : MonoBehaviour
     private int playerHealth;
     [SerializeField] private float timeToHeal;
     [SerializeField] private int maxHealth;
-
-    private ColorGrading colorGradingEffect;
+    public AudioClip[] damagedSFX;
 
 
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = maxHealth;
-        colorGradingEffect = GetComponentInChildren<PostProcessVolume>().profile.GetSetting<ColorGrading>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(playerHealth == 0)
-        {
-            Debug.Log("Player Died");
-        }
+        
+    }
+
+    private void PlayerDied()
+    {
+        GetComponent<AudioSource>().clip = damagedSFX[damagedSFX.Length - 1];
+        GetComponent<AudioSource>().Play();
+        Time.timeScale = 0;
     }
 
     public void TakeDamage()
     {
         CancelInvoke("Heal");
         playerHealth--;
-        InvokeRepeating("Heal", timeToHeal, timeToHeal);
+        if(playerHealth == 0)
+        {
+            PlayerDied();
+        }
+        else
+        {
+            GetComponent<AudioSource>().clip = damagedSFX[Random.Range(0, damagedSFX.Length - 1)];
+            GetComponent<AudioSource>().Play();
+            InvokeRepeating("Heal", timeToHeal, timeToHeal);
+        }
     }
 
     private void Heal()
