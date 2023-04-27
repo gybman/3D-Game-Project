@@ -10,18 +10,21 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float timeToHeal;
     [SerializeField] private int maxHealth;
     public AudioClip[] damagedSFX;
+    public GameObject gameOver;
 
 
     // Start is called before the first frame update
     void Start()
     {
         playerHealth = maxHealth;
+        gameOver.SetActive(false);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void PlayerDied()
@@ -29,13 +32,14 @@ public class PlayerHealth : MonoBehaviour
         GetComponent<AudioSource>().clip = damagedSFX[damagedSFX.Length - 1];
         GetComponent<AudioSource>().Play();
         Time.timeScale = 0;
+        gameOver.SetActive(true);
     }
 
     public void TakeDamage()
     {
         CancelInvoke("Heal");
         playerHealth--;
-        if(playerHealth == 0)
+        if (playerHealth == 0)
         {
             PlayerDied();
         }
@@ -54,5 +58,15 @@ public class PlayerHealth : MonoBehaviour
             playerHealth++;
         }
         Debug.Log("Health: " + playerHealth);
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public int GetPlayerHealth()
+    {
+        return playerHealth;
     }
 }
