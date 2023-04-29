@@ -32,6 +32,9 @@ public class PlayerHealth : MonoBehaviour
         GetComponent<AudioSource>().clip = damagedSFX[damagedSFX.Length - 1];
         GetComponent<AudioSource>().Play();
         Time.timeScale = 0;
+        FindObjectOfType<PlayerMovement>().enabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         gameOver.SetActive(true);
     }
 
