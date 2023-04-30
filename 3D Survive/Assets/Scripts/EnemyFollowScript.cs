@@ -24,15 +24,19 @@ public class EnemyFollowScript : MonoBehaviour
         GetComponent<AudioSource>().clip = zombieSFX[Random.Range(0, zombieSFX.Length)];
         GetComponent<AudioSource>().Play();
         Invoke("Growl", Random.Range(2.0f, 8.0f));
+        navMeshAgent.SetDestination(playerTarget.position);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (navMeshAgent.pathPending) return;
+
         navMeshAgent.SetDestination(playerTarget.position);
 
-        if(navMeshAgent.remainingDistance <= distanceToAttack)
+        if (navMeshAgent.remainingDistance <= distanceToAttack)
         {
+            Debug.Log(navMeshAgent.remainingDistance);
             animator.SetBool("inAttackRange", true);
             navMeshAgent.isStopped = true;
         }
