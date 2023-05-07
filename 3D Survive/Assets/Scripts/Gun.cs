@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour{
 
@@ -13,7 +14,8 @@ public class Gun : MonoBehaviour{
     public float impactForce = 30f;
 
     public int maxAmmo = 10;
-    private int currentAmmo;
+    public int currentAmmo;
+    public int magazineSize = 50;
     public float reloadTime = 1f;
     private bool isReloading = false;
 
@@ -22,6 +24,13 @@ public class Gun : MonoBehaviour{
     public GameObject impactEffect;
 
     public Animator animator;
+    public AudioClip shooting;
+    public AudioClip Re;
+    public Text ammoDisplay;
+    public PickUpController pk;
+    public GameObject activate;
+   
+
 
     private float nextTimeToFire = 0f;
 
@@ -38,10 +47,24 @@ public class Gun : MonoBehaviour{
     // Update is called once per frame
     void Update ()
     {
-        if (isReloading)
+        ammoDisplay.text = currentAmmo.ToString() +" / " + magazineSize.ToString();
+        if(currentAmmo == 0  &&  magazineSize == 0) 
         {
+            
+            animator.SetBool("Reloading", false);
+            pk.Drop();
+            Destroy(gameObject, 1);
+            activate.SetActive(true);
+            
+            
+            
             return;
         }
+
+        if (isReloading)
+            return;
+        
+
         if (currentAmmo <= 0)
         {
             StartCoroutine(Reload());
@@ -54,6 +77,11 @@ public class Gun : MonoBehaviour{
             Shoot();
         }
 
+        if(currentAmmo == 0 &&  magazineSize > 0 && !isReloading) 
+        {
+            StartCoroutine(Reload());
+        }
+
     }
 
     IEnumerator Reload ()
@@ -61,21 +89,35 @@ public class Gun : MonoBehaviour{
         isReloading = true;
 
         animator.SetBool("Reloading", true);
+        GetComponentInParent<AudioSource>().PlayOneShot(Re);
 
         yield return new WaitForSeconds(reloadTime - .25f);
         animator.SetBool("Reloading", false);
+
+        if(magazineSize >= maxAmmo) 
+        {
+            currentAmmo = maxAmmo;
+            magazineSize -= maxAmmo;
+        }
+
+        else
+        {
+            currentAmmo = magazineSize;
+            magazineSize = 0;
+        }
+        isReloading = false;
+        animator.SetBool("Reloading", false);
         yield return new WaitForSeconds(1f);
 
-
-        currentAmmo = maxAmmo;
-        isReloading = false;
+        
     }
 
     void Shoot ()
     {
         muzzleflash.Play();
-
+        
         currentAmmo--;
+        GetComponentInParent<AudioSource>().PlayOneShot(shooting);
 
         RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
