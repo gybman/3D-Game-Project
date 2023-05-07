@@ -194,7 +194,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375712568431940856}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.719, y: 1.4969671, z: 5.88}
   m_LocalScale: {x: 0.70832, y: 0.70832, z: 0.70832}
   m_ConstrainProportionsScale: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   impactForce: 30
   maxAmmo: 10
   currentAmmo: 0
-  magazineSize: 50
+  magazineSize: 0
   reloadTime: 1
   fpscamera: {fileID: 0}
   muzzleflash: {fileID: 375712569598351014}
@@ -229,6 +229,9 @@ MonoBehaviour:
   animator: {fileID: 375712568431940836}
   shooting: {fileID: 8300000, guid: 3061c7b9b32d894478e4126ccce25ca3, type: 3}
   Re: {fileID: 8300000, guid: 5e7f633dda3117f4f90253f51ee065f0, type: 3}
+  ammoDisplay: {fileID: 0}
+  pk: {fileID: 375712568431940839}
+  activate: {fileID: 0}
 --- !u!95 &375712568431940836
 Animator:
   serializedVersion: 5
@@ -291,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunScript: {fileID: 375712568431940835}
+  currentGun: {fileID: 375712568431940835}
   rb: {fileID: 375712568431940837}
   coll: {fileID: 375712568431940838}
   player: {fileID: 0}
@@ -300,6 +304,8 @@ MonoBehaviour:
   dropForwardForce: 15
   dropUpwardForce: 7
   equipped: 0
+  ammoDisplay: {fileID: 0}
+  deactivate: {fileID: 0}
 --- !u!1 &375712568533366780
 GameObject:
   m_ObjectHideFlags: 0
