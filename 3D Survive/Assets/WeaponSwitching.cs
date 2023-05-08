@@ -3,6 +3,8 @@ using UnityEngine;
 public class WeaponSwitching : MonoBehaviour {
 
     public int selectedWeapon = 0;
+    public GameObject activate;
+    public PickUpController d;
     
 
     // Start is called before the first frame update
@@ -17,17 +19,28 @@ public class WeaponSwitching : MonoBehaviour {
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
-            if (selectedWeapon >= transform.childCount - 1)
+            if (selectedWeapon >= transform.childCount - 1){
                 selectedWeapon = 0;
-            else
+                activate.SetActive(true);
+            }
+            else {
                 selectedWeapon++;
+            }
         }
+        
         if (Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
-            if (selectedWeapon <= 0)
+            if (selectedWeapon <= 0){
                 selectedWeapon = transform.childCount - 1;
-            else
+                activate.SetActive(true);
+            }
+            else{
                 selectedWeapon--;
+            }
+
+        
+
+
         }
 
         if(prevWeapon != selectedWeapon) 

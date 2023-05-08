@@ -219,9 +219,9 @@ MonoBehaviour:
   range: 100
   fireRate: 15
   impactForce: 30
-  maxAmmo: 10
+  maxAmmo: 65
   currentAmmo: 0
-  magazineSize: 0
+  magazineSize: 200
   reloadTime: 1
   fpscamera: {fileID: 0}
   muzzleflash: {fileID: 375712569598351014}
