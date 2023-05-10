@@ -28,13 +28,20 @@ public class Gun : MonoBehaviour{
     public AudioClip Re;
     public Text ammoDisplay;
     public PickUpController pk;
-    public GameObject activate;
+    public PistolReference activate;
    
 
 
     private float nextTimeToFire = 0f;
 
-    void Start ()
+
+    private void Awake()
+    {
+        fpscamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        ammoDisplay = GameObject.Find("ammo").GetComponent<Text>();
+        activate = GameObject.Find("WeaponHolder").GetComponent<PistolReference>();
+    }
+    private void Start ()
     {
         currentAmmo = maxAmmo;
     }
@@ -54,7 +61,7 @@ public class Gun : MonoBehaviour{
             animator.SetBool("Reloading", false);
             pk.Drop();
             Destroy(gameObject, 1);
-            activate.SetActive(true);
+            // activate.SetActive(true);
             
             
             
@@ -122,7 +129,7 @@ public class Gun : MonoBehaviour{
         RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
         {
-            UnityEngine.Debug.Log(hit.transform.name);
+            // UnityEngine.Debug.Log(hit.transform.name);
 
             Target target = hit.transform.GetComponent<Target>();
             if (target != null)

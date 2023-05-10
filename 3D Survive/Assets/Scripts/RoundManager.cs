@@ -12,10 +12,13 @@ public class RoundManager : MonoBehaviour
     public int enemyStartingCount = 10;
     public int increaseEnemyCount = 3;
     private int currentRound = 1;
+    public float enemyStartingHealth = 10f;
 
     void Awake()
     {
-        enemies.health = 30f;
+        enemies.health = enemyStartingHealth;
+        // Reset the static variable when the scene is loaded
+        PickUpController.slotFull = false;
     }
 
     // Start is called before the first frame update

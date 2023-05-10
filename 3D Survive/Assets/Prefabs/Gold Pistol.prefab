@@ -699,7 +699,7 @@ MonoBehaviour:
   magazineSize: 55
   reloadTime: 1
   fpscamera: {fileID: 0}
-  muzzleflash: {fileID: 0}
+  muzzleflash: {fileID: 6935590716133171675}
   impactEffect: {fileID: 1000010355441670, guid: 02a509a7fa70ed740ba4197e20c5d32d, type: 3}
   animator: {fileID: 425292392759888729}
   shooting: {fileID: 8300000, guid: 8401456349c492a489ed90469e317e43, type: 3}

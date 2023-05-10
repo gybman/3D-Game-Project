@@ -18,16 +18,29 @@ public class PickUpController : MonoBehaviour
    public static bool slotFull;
    public Text ammoDisplay;
    
-   public GameObject deactivate;
-   
-   
-   
-   
-  
+   public PistolReference deactivate;
 
-   private void Start() 
+    // Used to shrink gun when on the floor
+    private float shrinkTime = 10f;
+    private float shrinkSpeed;
+    private float remainingTime = 10f;
+    private Vector3 initialScale;
+
+
+
+
+    private void Awake()
+    {
+        deactivate = GameObject.Find("WeaponHolder").GetComponent<PistolReference>();
+        ammoDisplay = GameObject.Find("ammo").GetComponent<Text>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        WeaponHolder = GameObject.Find("WeaponHolder").GetComponent<Transform>();
+        fpsCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
+    }
+
+    private void Start() 
    {
-       
+              
         if(!equipped)
         {
              //a.selectedWeapon++;
@@ -48,22 +61,54 @@ public class PickUpController : MonoBehaviour
            
         }
 
-
-   }
+        initialScale = transform.localScale;
+        // calculate the shrink speed based on the total time
+        shrinkSpeed = transform.localScale.x / shrinkTime;
+    }
 
    private void Update() 
    {
-    Vector3 distanceToPlayer = player.position - transform.position;
-    if(!equipped && distanceToPlayer.magnitude <= pickUpRange && Input.GetKeyDown(KeyCode.E) && !slotFull)
-    {
-     PickUp();
-     deactivate.SetActive(false);
+        Vector3 distanceToPlayer = player.position - transform.position;
+        if(!equipped && distanceToPlayer.magnitude <= pickUpRange && Input.GetKeyDown(KeyCode.E) && !slotFull)
+        {
+            PickUp();
+            deactivate.DisablePistol();
+        }
 
-    } 
+        if (equipped && Input.GetKeyDown(KeyCode.Q))
+        {
+            Drop();
+        }
 
-    if (equipped && Input.GetKeyDown(KeyCode.Q)) Drop();
+        if (!equipped)
+        {
+            remainingTime -= Time.deltaTime;
 
-   }
+            // decrease the object's scale by the shrink speed
+            transform.localScale = new Vector3(
+                transform.localScale.x - shrinkSpeed * Time.deltaTime,
+                transform.localScale.y - shrinkSpeed * Time.deltaTime,
+                transform.localScale.z - shrinkSpeed * Time.deltaTime
+                );
+
+            // clamp the scale to a minimum value of zero
+            transform.localScale = new Vector3(
+                Mathf.Max(transform.localScale.x, 0),
+                Mathf.Max(transform.localScale.y, 0),
+                Mathf.Max(transform.localScale.z, 0)
+                );
+
+            if (remainingTime <= 0f)
+            {
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            remainingTime = 10f;
+        }
+
+    }
 
    private void PickUp() 
    {
@@ -105,7 +150,7 @@ public class PickUpController : MonoBehaviour
         rb.AddTorque(new Vector3(random,random,random)*10);
         gunScript.enabled = false;
 
-
-   }
+        deactivate.EnablePistol();
+    }
 
 }

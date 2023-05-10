@@ -123,7 +123,7 @@ public class pistol : MonoBehaviour{
         RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
         {
-            UnityEngine.Debug.Log(hit.transform.name);
+            // UnityEngine.Debug.Log(hit.transform.name);
 
             Target target = hit.transform.GetComponent<Target>();
             if (target != null)
