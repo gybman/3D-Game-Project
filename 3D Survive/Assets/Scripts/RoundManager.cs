@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class RoundManager : MonoBehaviour
     public int increaseEnemyCount = 3;
     private int currentRound = 1;
     public float enemyStartingHealth = 10f;
+    public Text waveCounter;
+    public Text killCountText;
 
     void Awake()
     {
@@ -25,6 +28,7 @@ public class RoundManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(spawnManager.SpawnACertainNumberOfEnemies(enemyStartingCount));
+        UpdateWaveCounter();
     }
 
     // Update is called once per frame
@@ -37,6 +41,7 @@ public class RoundManager : MonoBehaviour
             currentRound++;
             NewRoundStats();
             StartCoroutine(spawnManager.SpawnACertainNumberOfEnemies(enemyStartingCount));
+            UpdateWaveCounter();
         }
     }
 
@@ -48,5 +53,15 @@ public class RoundManager : MonoBehaviour
         {
             enemies.health += enemyHealthIncrease;
         }
+    }
+
+    void UpdateWaveCounter()
+    {
+        waveCounter.text = "Wave " + currentRound.ToString();
+    }
+
+    public void UpdateKillCounter()
+    {
+        killCountText.text = "Kills: " + killCount.totalKills;
     }
 }

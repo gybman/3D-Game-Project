@@ -26,6 +26,7 @@ public class Target : MonoBehaviour
         powerUpManager.EnemyDied(this.gameObject.transform);
         Destroy(gameObject);
         killsInRound.roundKills++;
+        killsInRound.totalKills++;
+        FindObjectOfType<RoundManager>().UpdateKillCounter();
     }
-
 }
