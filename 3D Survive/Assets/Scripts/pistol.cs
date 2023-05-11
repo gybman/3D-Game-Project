@@ -123,7 +123,7 @@ public class pistol : MonoBehaviour{
         RaycastHit hit;
         if (Physics.Raycast(fpscamera.transform.position, fpscamera.transform.forward, out hit, range))
         {
-            // UnityEngine.Debug.Log(hit.transform.name);
+            //UnityEngine.Debug.Log(hit.transform.name);
 
             Target target = hit.transform.GetComponent<Target>();
             if (target != null)
@@ -136,8 +136,12 @@ public class pistol : MonoBehaviour{
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
 
-            GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, 2f);
+            if (hit.transform.name != "Zombie1(Clone)")
+            {
+                GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactGO, 2f);
+            }
+            
         }
 
     }

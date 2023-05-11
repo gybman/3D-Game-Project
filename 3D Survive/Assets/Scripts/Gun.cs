@@ -142,8 +142,12 @@ public class Gun : MonoBehaviour{
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
 
-            GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, 2f);
+            if (hit.transform.name != "Zombie1(Clone)")
+            {
+                GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactGO, 2f);
+            }
+            
         }
 
     }

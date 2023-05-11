@@ -9391,7 +9391,7 @@ MonoBehaviour:
   - {fileID: 375712568431940856, guid: 597e4264b76331f438b7f4d18bf61311, type: 3}
   - {fileID: 7287585144560243836, guid: e0dd6223d8874154f87986341a1e929d, type: 3}
   - {fileID: 4601993900065488296, guid: 5644c5f5b4378634fb7a762afd8cfffa, type: 3}
-  chanceForPowerUp: 0.5
+  chanceForPowerUp: 10
 --- !u!4 &462667159
 Transform:
   m_ObjectHideFlags: 0
